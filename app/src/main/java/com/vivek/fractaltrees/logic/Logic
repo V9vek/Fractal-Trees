@@ -2,6 +2,10 @@
 LOGIC FILE I am using to explain some fractal trees logic to myself
 This file also contains code which can be used in alternative way
 
+
+        // val trunkLength = 300f               // first branch is trunk
+        // val depth = 4                        // depth or levels
+
         // decreasing branch length by (2/3) ratio everytime
         val nextBranchLength = branchLength * 0.67f
         val branchAngleDifference = (PI / 4)
