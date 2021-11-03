@@ -1,86 +1,72 @@
 package com.vivek.fractaltrees.ui.screens
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Slider
+import androidx.compose.material.SliderDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.center
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.unit.dp
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
+import com.vivek.fractaltrees.ui.theme.SliderBGColorActive
 
 @Composable
 fun FractalTreesScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Canvas(
+    var branchLength by remember { mutableStateOf(300f) }
+    var treeDepth by remember { mutableStateOf(1f) }
+    var branchAngle by remember { mutableStateOf(0f) }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        TreeDrawingCanvas(
             modifier = Modifier
-                .fillMaxSize()
-                .border(width = 1.dp, color = Color.Red)
-        ) {
-            val canvasWidth = size.width
-            val canvasHeight = size.height
-            val center = size.center
-            val trunkLength = 300f               // first branch is trunk
-            val depth = 4                        // depth or levels
-            val branchAngle =
-                -(PI.div(2))             // trunk is -90 degree to go upwards not downward
+                .weight(1f)
+                .align(Alignment.CenterHorizontally),
+            branchLength = branchLength,
+            treeDepth = treeDepth.toInt(),
+            branchAngleDifference = branchAngle
+        )
 
-            drawTree(
-                start = Offset(center.x, canvasHeight),
-                end = Offset(x = center.x, y = canvasHeight - trunkLength),
-                depth = depth,
-                branchLength = trunkLength,
-                branchAngle = branchAngle
+        Text(text = "Branch Length")
+
+        Slider(
+            value = branchLength,
+            onValueChange = { branchLength = it },
+            valueRange = 300f..500f,
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colors.onBackground,
+                activeTrackColor = SliderBGColorActive
             )
-        }
-    }
-}
-
-fun DrawScope.drawTree(
-    start: Offset,
-    end: Offset,
-    depth: Int,
-    branchLength: Float,
-    branchAngle: Double
-) {
-    if (depth == 0) return
-
-    drawLine(
-        start = start,
-        end = end,
-        color = Color.White,
-        strokeWidth = 5f
-    )
-
-    // decreasing branch length by (2/3) ratio everytime
-    val nextBranchLength = branchLength * 0.67f
-    val branchAngleDifference = (PI / 4)
-
-    fun branch(angle: Double) {
-        val nextEndOffset = Offset(
-            x = (end.x + (nextBranchLength * cos(angle))).toFloat(),
-            y = (end.y + (nextBranchLength * sin(angle))).toFloat()
         )
 
-        drawTree(
-            start = end,
-            end = nextEndOffset,
-            depth = depth - 1,
-            branchLength = nextBranchLength,
-            branchAngle = angle
+        Text(text = "Tree Depth")
+
+        Slider(
+            value = treeDepth,
+            onValueChange = { treeDepth = it },
+            valueRange = 1f..15f,
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colors.onBackground,
+                activeTrackColor = SliderBGColorActive
+            )
+        )
+
+        Text(text = "Branch Angle")
+
+        Slider(
+            value = branchAngle,
+            onValueChange = { branchAngle = it },
+            valueRange = 0f..0.35f,
+            colors = SliderDefaults.colors(
+                thumbColor = MaterialTheme.colors.onBackground,
+                activeTrackColor = SliderBGColorActive
+            )
         )
     }
-
-    // Right branch
-    branch(angle = branchAngle + branchAngleDifference)
-    // Left branch
-    branch(angle = branchAngle - branchAngleDifference)
 }
 
 
