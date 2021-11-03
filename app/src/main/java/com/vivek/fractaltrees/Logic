@@ -1,0 +1,49 @@
+
+
+        // decreasing branch length by (2/3) ratio everytime
+        val nextBranchLength = branchLength * 0.67f
+        val branchAngleDifference = (PI / 4)
+
+        // (-90+45 = -45)
+        // x -> cos(-45) -> positive (going right)
+        // y -> sin(-45) -> negative (going up)
+        val nextBranchAngle = branchAngle + branchAngleDifference
+
+        // nextX = r * cos(theta)
+        // nextY = r * sin(theta)
+        val nextEndOffset = Offset(
+            x = (end.x + (nextBranchLength * cos(nextBranchAngle))).toFloat(),
+            y = (end.y + (nextBranchLength * sin(nextBranchAngle))).toFloat()
+        )
+
+        // Right Branch
+        drawTree(
+            start = end,
+            end = nextEndOffset,
+            depth = depth - 1,
+            branchLength = nextBranchLength,
+            branchAngle = nextBranchAngle
+        )
+
+
+
+        // (-90-45 = -135)
+        // x -> cos(-135) -> negative (going left)
+        // y -> sin(-135) -> negative (going up)
+        val nextBranchAngle2 = branchAngle - branchAngleDifference
+
+        // nextX = r * cos(theta)
+        // nextY = r * sin(theta)
+        val nextEndOffset2 = Offset(
+            x = (end.x + (nextBranchLength * cos(nextBranchAngle2))).toFloat(),
+            y = (end.y + (nextBranchLength * sin(nextBranchAngle2))).toFloat()
+        )
+
+        // Left Branch
+        drawTree(
+            start = end,
+            end = nextEndOffset2,
+            depth = depth - 1,
+            branchLength = nextBranchLength,
+            branchAngle = nextBranchAngle2
+        )
