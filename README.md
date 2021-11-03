@@ -11,6 +11,7 @@ Having Fun in Jetpack Compose 🚀 PART 3 😉
 Inspired from `The Coding Train`
 
 ## :camera_flash: Video
+https://user-images.githubusercontent.com/40730402/140171245-0dab6e65-b6c4-4909-bce9-afbefc20d819.mp4
 
 
 ## License
